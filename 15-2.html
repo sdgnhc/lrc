@@ -2,57 +2,216 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>15-2</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript 程序结构</title>
     <style>
-        .container {
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1e1e24;
+            color: #fff;
             display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+        h1 { font-size: 28px; margin-bottom: 10px; }
+        .subtitle { color: #aaa; font-size: 14px; margin-bottom: 30px; text-align: center; }
+        
+        .wrapper {
+            display: flex;
+            gap: 20px;
             flex-wrap: wrap;
-            gap: 10px;
-            padding: 20px;
             justify-content: center;
+            width: 100%;
+            max-width: 1000px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: linear-gradient(145deg, #2b2e4a, #242743);
+            border: 1px solid #3f4a7a;
+            border-radius: 12px;
+            padding: 20px;
+            width: 450px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .card h3 { font-size: 16px; margin-bottom: 15px; color: #e0e0e0; }
+        
+        pre {
+            background: #1a1b2e;
+            padding: 12px;
+            border-radius: 8px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 13px;
+            color: #a8b2ff;
+            margin-bottom: 15px;
+            overflow-x: auto;
+        }
+
+        .input-group { display: flex; gap: 10px; margin-bottom: 15px; }
+        
+        input {
+            flex: 1;
+            background: #1a1b2e;
+            border: 1px solid #4a5588;
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            outline: none;
+        }
+        input:focus { border-color: #7a8cff; }
+
+        button {
+            background: #d1e5ff;
+            color: #1e1e24;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        button:hover { background: #fff; }
+
+        .result {
+            background: #1a1b2e;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #ccc;
+            min-height: 45px;
+            display: flex;
             align-items: center;
         }
-        .box {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 14px;
+
+        /* 循环演示区域 */
+        .loop-card {
+            width: 100%;
+            max-width: 920px;
+            background: linear-gradient(145deg, #2b2e4a, #242743);
+            border: 1px solid #3f4a7a;
+            border-radius: 12px;
+            padding: 20px;
+        }
+        .loop-output { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 15px; }
+        .loop-item {
+            background: #4a5588;
+            color: #fff;
+            width: 35px; height: 35px;
+            display: flex; justify-content: center; align-items: center;
+            border-radius: 50%;
+            font-size: 13px;
             font-weight: bold;
-            color: white;
-            border-radius: 5px;
         }
     </style>
 </head>
 <body>
-    <div class="container" id="box-container"></div>
+
+    <h1>JavaScript 程序结构</h1>
+    <p class="subtitle">三大程序结构：顺序、条件（分支）、循环。点击按钮即可实时运行。</p>
+
+    <div class="wrapper">
+        <!-- 条件结构：if...else -->
+        <div class="card">
+            <h3>1. if...else if...else: 成绩等级</h3>
+            <pre>if (score >= 90) { grade = "优秀"; }
+else if (score >= 80) { grade = "良好"; }
+else if (score >= 60) { grade = "及格"; }
+else { grade = "不及格"; }</pre>
+            <div class="input-group">
+                <input type="number" id="scoreInput" placeholder="输入成绩 0~100">
+                <button onclick="checkScore()">判断等级</button>
+            </div>
+            <div id="scoreResult" class="result">等待输入...</div>
+        </div>
+
+        <!-- 条件结构：switch -->
+        <div class="card">
+            <h3>2. switch: 数字转星期</h3>
+            <pre>switch (day) {
+  case 1: week = "星期一"; break;
+  case 2: week = "星期二"; break;
+  ...
+  default: week = "输入无效";
+}</pre>
+            <div class="input-group">
+                <input type="number" id="dayInput" placeholder="输入 1~7">
+                <button onclick="convertDay()">转换星期</button>
+            </div>
+            <div id="dayResult" class="result">等待输入...</div>
+        </div>
+    </div>
+
+    <!-- 循环结构 -->
+    <div class="loop-card">
+        <h3>3. 循环结构：for 循环</h3>
+        <pre>for (let i = 1; i <= 10; i++) {
+    // 循环执行代码
+}</pre>
+        <button onclick="runLoop()">运行 1~10 循环</button>
+        <div id="loopOutput" class="loop-output"></div>
+    </div>
 
     <script>
-        const container = document.getElementById('box-container');
+        // 1. if...else 判断成绩
+        function checkScore() {
+            const score = parseFloat(document.getElementById('scoreInput').value);
+            const resultDiv = document.getElementById('scoreResult');
+            let grade = "";
 
-        // 循环：生成 100 个盒子
-        for (let i = 1; i <= 100; i++) {
-            const box = document.createElement('div');
-            box.classList.add('box');
-
-            // 随机颜色 (RGB)
-            const r = Math.floor(Math.random() * 256);
-            const g = Math.floor(Math.random() * 256);
-            const b = Math.floor(Math.random() * 256);
-            box.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
-
-            // 随机大小 (20px - 60px)
-            const size = Math.floor(Math.random() * 40) + 20;
-            box.style.width = `${size}px`;
-            box.style.height = `${size}px`;
-
-            // 条件：偶数显示数字，奇数显示为空
-            if (i % 2 === 0) {
-                box.textContent = i;
+            if (isNaN(score) || score < 0 || score > 100) {
+                grade = "请输入 0 到 100 之间的有效数字！";
+                resultDiv.style.color = "#ff7b7b";
+            } else if (score >= 90) {
+                grade = "优秀";
+                resultDiv.style.color = "#7bffb3";
+            } else if (score >= 80) {
+                grade = "良好";
+                resultDiv.style.color = "#7bffb3";
+            } else if (score >= 60) {
+                grade = "及格";
+                resultDiv.style.color = "#ffd97b";
             } else {
-                box.textContent = '';
+                grade = "不及格";
+                resultDiv.style.color = "#ff7b7b";
             }
+            resultDiv.textContent = "结果：" + grade;
+        }
 
-            container.appendChild(box);
+        // 2. switch 转换星期
+        function convertDay() {
+            const day = parseInt(document.getElementById('dayInput').value);
+            const resultDiv = document.getElementById('dayResult');
+            let week = "";
+
+            switch (day) {
+                case 1: week = "星期一"; break;
+                case 2: week = "星期二"; break;
+                case 3: week = "星期三"; break;
+                case 4: week = "星期四"; break;
+                case 5: week = "星期五"; break;
+                case 6: week = "星期六"; break;
+                case 7: week = "星期日"; break;
+                default: week = "输入无效，请输入 1~7 的数字";
+            }
+            resultDiv.textContent = "结果：" + week;
+        }
+
+        // 3. for 循环演示
+        function runLoop() {
+            const outputDiv = document.getElementById('loopOutput');
+            outputDiv.innerHTML = ""; // 清空之前的输出
+            
+            // 使用 for 循环生成 1 到 10 的圆圈
+            for (let i = 1; i <= 10; i++) {
+                const span = document.createElement('span');
+                span.className = 'loop-item';
+                span.textContent = i;
+                outputDiv.appendChild(span);
+            }
         }
     </script>
 </body>
