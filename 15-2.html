@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>15-2</title>
+    <style>
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 20px;
+            justify-content: center;
+            align-items: center;
+        }
+        .box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            font-weight: bold;
+            color: white;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="box-container"></div>
+
+    <script>
+        const container = document.getElementById('box-container');
+
+        // 循环：生成 100 个盒子
+        for (let i = 1; i <= 100; i++) {
+            const box = document.createElement('div');
+            box.classList.add('box');
+
+            // 随机颜色 (RGB)
+            const r = Math.floor(Math.random() * 256);
+            const g = Math.floor(Math.random() * 256);
+            const b = Math.floor(Math.random() * 256);
+            box.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+
+            // 随机大小 (20px - 60px)
+            const size = Math.floor(Math.random() * 40) + 20;
+            box.style.width = `${size}px`;
+            box.style.height = `${size}px`;
+
+            // 条件：偶数显示数字，奇数显示为空
+            if (i % 2 === 0) {
+                box.textContent = i;
+            } else {
+                box.textContent = '';
+            }
+
+            container.appendChild(box);
+        }
+    </script>
+</body>
+</html>
