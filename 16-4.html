@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>点击排行 - 16-4课堂测试</title>
+    <style>
+        /* 基础重置 */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: "Microsoft YaHei", Arial, sans-serif; padding: 50px; background-color: #fff; }
+        
+        /* 整体容器 */
+        .rank-container { width: 420px; }
+        
+        /* 1. 头部样式：使用 tit06.jpg */
+        .rank-header { margin-bottom: 10px; }
+        .rank-header img {
+            display: block;
+            height: 30px; /* 根据实际图片大小调整 */
+            width: auto;
+        }
+        
+        /* Tab 导航栏 */
+        .tab-nav {
+            display: flex; list-style: none; background-color: #e6e6e6;
+            border-bottom: 1px solid #ccc; height: 38px;
+            position: relative; /* 为了给 lin.jpg 定位 */
+        }
+        .tab-nav li {
+            flex: 1; text-align: center; line-height: 38px; font-size: 14px;
+            color: #333; cursor: pointer; position: relative;
+            border-right: 1px solid #ccc; /* 分割线 */
+            z-index: 1;
+        }
+        .tab-nav li:last-child { border-right: none; }
+        
+        /* 选中的 Tab 样式 */
+        .tab-nav li.active {
+            background-color: #fff; color: #ff6600; font-weight: bold;
+        }
+        /* 2. 使用 lin.jpg 替代 CSS 画的折角 */
+        .tab-nav li.active::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -1px; /* 盖住底部的灰线 */
+            width: 100%;
+            height: 6px; /* 图片的高度，根据实际情况微调 */
+            background: url('img/lin.jpg') no-repeat center bottom;
+            background-size: 100% auto; /* 图片宽度撑满，高度自适应 */
+            z-index: 2;
+        }
+
+        /* 内容列表区 */
+        .tab-content { padding-top: 15px; }
+        .list-pane { display: none; list-style: none; }
+        .list-pane.active { display: block; }
+        
+        .list-pane li {
+            display: flex; align-items: center; height: 35px; font-size: 14px;
+        }
+        
+        /* 序号通用样式 */
+        .num {
+            display: inline-block; width: 18px; height: 18px; 
+            text-align: center; font-size: 12px; color: #ff6600; 
+            margin-right: 10px; flex-shrink: 0;
+            line-height: 18px;
+        }
+        
+        /* 3. 前3名使用 k.jpg 作为背景图 */
+        .num.top3 {
+            background: url('img/k.jpg') no-repeat center center;
+            background-size: 100% 100%; /* 让图片完全填满方块 */
+            border: none; /* 移除之前的 CSS 边框 */
+            color: #ff6600;
+        }
+        
+        /* 新闻标题 */
+        .title {
+            color: #333; flex-grow: 1; margin-right: 15px;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        /* 点击数 */
+        .count { color: #999; font-size: 12px; width: 50px; text-align: right; flex-shrink: 0; }
+    </style>
+</head>
+<body>
+
+    <div class="rank-container">
+        <!-- 头部标题 -->
+        <div class="rank-header">
+            <img src="img/tit06.jpg" alt="点击排行">
+        </div>
+
+        <!-- Tab 导航 (1-4) -->
+        <ul class="tab-nav" id="tabNav">
+            <li data-index="0">实时点击</li>
+            <li data-index="1" class="active">24小时排行</li>
+            <li data-index="2">本周排行</li>
+            <li data-index="3">本月排行</li>
+        </ul>
+
+        <!-- 内容区域 -->
+        <div class="tab-content" id="tabContent">
+            <!-- Pane 1 -->
+            <ul class="list-pane">
+                <li><span class="num top3">1</span><span class="title">盘点全球最奇葩的吉尼斯世界纪录</span><span class="count">452311</span></li>
+                <li><span class="num top3">2</span><span class="title">男子钓到巨型怪鱼 专家称是活化石</span><span class="count">398765</span></li>
+                <li><span class="num top3">3</span><span class="title">游客在野生动物园擅自下车被老虎袭击</span><span class="count">312045</span></li>
+                <li><span class="num">4</span><span class="title">某地惊现海市蜃楼 宛如仙境</span><span class="count">287654</span></li>
+                <li><span class="num">5</span><span class="title">科学家发现新物种 长相奇特</span><span class="count">234567</span></li>
+                <li><span class="num">6</span><span class="title">大妈跳广场舞扰民 遭居民泼水</span><span class="count">198765</span></li>
+                <li><span class="num">7</span><span class="title">男子花光积蓄买彩票 竟中大奖</span><span class="count">156789</span></li>
+                <li><span class="num">8</span><span class="title">百年老树突然开花 引众人围观</span><span class="count">123456</span></li>
+            </ul>
+
+            <!-- Pane 2 (对应原图内容) -->
+            <ul class="list-pane active">
+                <li><span class="num top3">1</span><span class="title">灯塔水母：地球上唯一不死生物</span><span class="count">356322</span></li>
+                <li><span class="num top3">2</span><span class="title">阿里巴巴全资收购UC 俞永福称U</span><span class="count">311246</span></li>
+                <li><span class="num top3">3</span><span class="title">亚马逊惊现三米长巨滑舌鱼用肺</span><span class="count">295883</span></li>
+                <li><span class="num">4</span><span class="title">奉化男子上山抓野味 遭遇极濒</span><span class="count">266061</span></li>
+                <li><span class="num">5</span><span class="title">大白鲨深海失踪 或被大型生物</span><span class="count">243936</span></li>
+                <li><span class="num">6</span><span class="title">南非小犀牛目睹母亲被猎杀不肯</span><span class="count">224346</span></li>
+                <li><span class="num">7</span><span class="title">余额宝周岁：收益率“过山车”</span><span class="count">172694</span></li>
+                <li><span class="num">8</span><span class="title">“尸油入餐桌”纯属无稽之谈</span><span class="count">128789</span></li>
+            </ul>
+
+            <!-- Pane 3 -->
+            <ul class="list-pane">
+                <li><span class="num top3">1</span><span class="title">本周热门：人工智能取代人类工作？</span><span class="count">876543</span></li>
+                <li><span class="num top3">2</span><span class="title">震惊！原来刷牙的正确方式是这样</span><span class="count">765432</span></li>
+                <li><span class="num top3">3</span><span class="title">深度解析：为什么现在年轻人不买房</span><span class="count">654321</span></li>
+                <li><span class="num">4</span><span class="title">你不知道的10个生活冷知识</span><span class="count">543210</span></li>
+                <li><span class="num">5</span><span class="title">周末去哪儿？周边游最佳攻略</span><span class="count">432109</span></li>
+                <li><span class="num">6</span><span class="title">新款手机发布 性能大幅提升</span><span class="count">321098</span></li>
+                <li><span class="num">7</span><span class="title">如何快速入睡 专家给你支招</span><span class="count">210987</span></li>
+                <li><span class="num">8</span><span class="title">网红美食店打卡 排队两小时</span><span class="count">109876</span></li>
+            </ul>
+
+            <!-- Pane 4 -->
+            <ul class="list-pane">
+                <li><span class="num top3">1</span><span class="title">年度大盘点：今年最火的十大网络语</span><span class="count">999999</span></li>
+                <li><span class="num top3">2</span><span class="title">回顾：那些改变世界的伟大发明</span><span class="count">888888</span></li>
+                <li><span class="num top3">3</span><span class="title">年终奖怎么花？理财专家告诉你</span><span class="count">777777</span></li>
+                <li><span class="num">4</span><span class="title">跨年旅行最值得去的5个地方</span><span class="count">666666</span></li>
+                <li><span class="num">5</span><span class="title">新年新气象 如何制定新年计划</span><span class="count">555555</span></li>
+                <li><span class="num">6</span><span class="title">春节抢票攻略 助你顺利回家</span><span class="count">444444</span></li>
+                <li><span class="num">7</span><span class="title">冬季养生必吃的五种食物</span><span class="count">333333</span></li>
+                <li><span class="num">8</span><span class="title">过年防骗指南 保护你的钱袋子</span><span class="count">222222</span></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 交互 JS -->
+    <script>
+        const tabs = document.querySelectorAll('#tabNav li');
+        const panes = document.querySelectorAll('.list-pane');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                // 移除所有选中状态
+                tabs.forEach(t => t.classList.remove('active'));
+                panes.forEach(p => p.classList.remove('active'));
+
+                // 当前点击项添加选中状态
+                this.classList.add('active');
+
+                // 显示对应内容
+                const index = this.getAttribute('data-index');
+                panes[index].classList.add('active');
+            });
+        });
+    </script>
+
+</body>
+</html>

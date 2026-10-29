@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品分类导航 - 右侧显示</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+            background-color: #ffffff;
+            /* 去掉之前的 padding，让布局铺满屏幕或容器 */
+            padding: 20px; 
+        }
+
+        /* 整体左右布局容器 */
+        .main-layout {
+            display: flex;       /* 使用弹性盒子左右排列 */
+            align-items: flex-start;
+            width: 100%;
+            max-width: 1200px;   /* 限制最大宽度，美观一点 */
+            height: 80vh;        /* 设定一个高度，方便看效果 */
+            margin: 0 auto;
+            border: 1px solid #eee;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        }
+
+        /* 左侧导航栏 */
+        .category-container {
+            width: 240px;       /* 固定左侧宽度 */
+            flex-shrink: 0;     /* 防止被挤压 */
+            border-right: 1px solid #f0f0f0;
+            background-color: #f9f9f9;
+            height: 100%;
+            overflow-y: auto;   /* 如果分类多，左侧可以滚动 */
+        }
+
+        .category-header {
+            background-color: #e60012;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            height: 45px;
+            line-height: 45px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .category-header::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 25px;
+            height: 25px;
+            background-color: #ffffff;
+        }
+
+        .category-list {
+            list-style: none;
+        }
+
+        .category-list li {
+            height: 42px;
+            line-height: 42px;
+        }
+
+        .category-list li a {
+            display: block;
+            text-decoration: none;
+            color: #333333;
+            font-size: 14px;
+            padding-left: 30px;
+            transition: all 0.2s ease;
+        }
+
+        /* 选中（点击后）或悬停时的效果 */
+        .category-list li a:hover, 
+        .category-list li a:focus {
+            background-color: #ffffff;
+            color: #e60012;
+            font-weight: bold;
+            border-left: 3px solid #e60012; /* 左侧加个红条更好看 */
+            padding-left: 27px; /* 减去边框宽度保持对齐 */
+        }
+
+        /* 右侧内容区 */
+        .right-content {
+            flex-grow: 1;       /* 占满剩余空间 */
+            height: 100%;
+            background-color: #ffffff;
+        }
+
+        /* iframe 样式 */
+        #content-frame {
+            width: 100%;
+            height: 100%;
+            border: none;       /* 去除 iframe 默认的丑边框 */
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-layout">
+        <!-- 左侧导航 -->
+        <div class="category-container">
+            <div class="category-header">全部商品分类</div>
+            
+            <ul class="category-list">
+                <!-- 重点：target="content-frame" 让页面在右侧 iframe 中打开 -->
+                <li><a href="book.html" target="content-frame">图书、童书</a></li>
+                <li><a href="ebook.html" target="content-frame">电子书</a></li>
+                <li><a href="stationery.html" target="content-frame">创意文具</a></li>
+                
+                <!-- 还没创建的页面先用 # 占位，或者指向默认页 -->
+                <li><a href="welcome.html" target="content-frame">服饰、内衣</a></li>
+                <li><a href="welcome.html" target="content-frame">运动户外</a></li>
+                <li><a href="welcome.html" target="content-frame">孕、婴、童</a></li>
+                <li><a href="welcome.html" target="content-frame">家居、家纺</a></li>
+                <li><a href="welcome.html" target="content-frame">家具、家装</a></li>
+                <li><a href="welcome.html" target="content-frame">食品、茶酒</a></li>
+                <li><a href="welcome.html" target="content-frame">家用电器</a></li>
+                <li><a href="welcome.html" target="content-frame">当当礼品卡</a></li>
+            </ul>
+        </div>
+
+        <!-- 右侧内容展示区 -->
+        <div class="right-content">
+            <!-- name 属性非常重要，上面的 a 标签就是通过它来定位的 -->
+            <iframe name="content-frame" id="content-frame" src="welcome.html"></iframe>
+        </div>
+    </div>
+
+</body>
+</html>

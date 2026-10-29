@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript 对象与字符串演示</title>
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text: #2d3436;
+            --border-color: #dfe6e9;
+            --obj-color: #0984e3;
+            --str-color: #e84393;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        
+        .subtitle {
+            color: #636e72;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .container {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            max-width: 1100px;
+            flex-wrap: wrap;
+        }
+
+        .panel {
+            flex: 1;
+            min-width: 450px;
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+
+        .panel-title {
+            font-size: 20px;
+            margin-top: 0;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .obj-title { color: var(--obj-color); }
+        .str-title { color: var(--str-color); }
+
+        /* 可视化展示区 */
+        .display-box {
+            background: #f1f2f6;
+            padding: 20px;
+            border-radius: 8px;
+            min-height: 120px;
+            margin-bottom: 20px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 16px;
+            line-height: 1.6;
+            word-break: break-all;
+            border: 1px solid var(--border-color);
+        }
+
+        .obj-key { color: #d63031; }
+        .obj-val { color: #0984e3; }
+        .obj-brackets { color: #b2bec3; font-weight: bold; }
+
+        .str-highlight { color: #e84393; font-weight: bold; }
+
+        /* 按钮样式 */
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        button {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-obj { background-color: var(--obj-color); }
+        .btn-obj:hover { background-color: #074b82; }
+        
+        .btn-str { background-color: var(--str-color); }
+        .btn-str:hover { background-color: #b32d6c; }
+
+        button.reset {
+            background-color: #636e72;
+            width: 100%;
+            margin-top: 10px;
+        }
+        button.reset:hover { background-color: #2d3436; }
+
+        /* 控制台 */
+        .console {
+            width: 100%;
+            max-width: 1100px;
+            margin-top: 20px;
+            background: #2d3436;
+            color: #dfe6e9;
+            padding: 15px;
+            border-radius: 12px;
+            font-family: 'Courier New', Courier, monospace;
+            height: 200px;
+            overflow-y: auto;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+        }
+
+        .console-line { margin: 5px 0; }
+        .console-line.info { color: #74b9ff; }
+        .console-line.result { color: #55efc4; }
+        .console-line.warning { color: #ffeaa7; }
+
+    </style>
+</head>
+<body>
+
+    <h1>JavaScript 对象与字符串</h1>
+    <p class="subtitle">Objects & Strings 交互式可视化演示</p>
+
+    <div class="container">
+        <!-- 左侧：对象演示 -->
+        <div class="panel">
+            <h2 class="panel-title obj-title">📦 JavaScript 对象 (Object)</h2>
+            <div id="object-display" class="display-box">
+                <!-- 对象渲染位置 -->
+            </div>
+            
+            <div class="btn-group">
+                <button class="btn-obj" onclick="addProperty()">添加属性 (obj.age = 25)</button>
+                <button class="btn-obj" onclick="updateProperty()">修改属性 (obj.name = 'Alice')</button>
+                <button class="btn-obj" onclick="deleteProperty()">删除属性 (delete obj.job)</button>
+                <button class="btn-obj" onclick="getKeys()">获取所有键 Object.keys()</button>
+                <button class="btn-obj" onclick="getValues()">获取所有值 Object.values()</button>
+            </div>
+            <button class="reset" onclick="resetObject()">重置对象</button>
+        </div>
+
+        <!-- 右侧：字符串演示 -->
+        <div class="panel">
+            <h2 class="panel-title str-title">🔤 JavaScript 字符串 (String)</h2>
+            <div id="string-display" class="display-box">
+                <!-- 字符串渲染位置 -->
+            </div>
+
+            <div class="btn-group">
+                <button class="btn-str" onclick="toUpperCase()">转大写 toUpperCase()</button>
+                <button class="btn-str" onclick="toLowerCase()">转小写 toLowerCase()</button>
+                <button class="btn-str" onclick="sliceStr()">截取前5个 slice(0, 5)</button>
+                <button class="btn-str" onclick="replaceStr()">替换 replace('World', 'JS')</button>
+                <button class="btn-str" onclick="templateLiteral()">模板字符串拼接</button>
+            </div>
+            <button class="reset" onclick="resetString()">重置字符串</button>
+        </div>
+    </div>
+
+    <!-- 控制台 -->
+    <div id="console" class="console">
+        <div class="console-line info">> 控制台就绪，等待操作...</div>
+    </div>
+
+    <script>
+        // --- 对象部分逻辑 ---
+        let myObject = {
+            name: "Bob",
+            job: "Developer"
+        };
+
+        const objDisplay = document.getElementById('object-display');
+
+        function renderObject() {
+            let html = `<span class="obj-brackets">{</span><br>`;
+            const keys = Object.keys(myObject);
+            if (keys.length === 0) {
+                html += `  <span style="color:#999">// 空对象</span><br>`;
+            } else {
+                keys.forEach(key => {
+                    html += `  <span class="obj-key">"${key}"</span>: <span class="obj-val">"${myObject[key]}"</span>,<br>`;
+                });
+            }
+            html += `<span class="obj-brackets">}</span>`;
+            objDisplay.innerHTML = html;
+        }
+
+        function addProperty() {
+            myObject.age = 25;
+            log(`obj.age = 25; -> 添加了新属性`, 'info');
+            renderObject();
+        }
+
+        function updateProperty() {
+            myObject.name = 'Alice';
+            log(`obj.name = 'Alice'; -> 修改了name属性`, 'info');
+            renderObject();
+        }
+
+        function deleteProperty() {
+            delete myObject.job;
+            log(`delete obj.job; -> 删除了job属性`, 'warning');
+            renderObject();
+        }
+
+        function getKeys() {
+            const keys = Object.keys(myObject);
+            log(`Object.keys(obj) -> 返回数组: [${keys.join(', ')}]`, 'result');
+        }
+
+        function getValues() {
+            const values = Object.values(myObject);
+            log(`Object.values(obj) -> 返回数组: ["${values.join('", "')}"]`, 'result');
+        }
+
+        function resetObject() {
+            myObject = { name: "Bob", job: "Developer" };
+            log(`对象已重置`, 'info');
+            renderObject();
+        }
+
+
+        // --- 字符串部分逻辑 ---
+        let myString = "Hello, World";
+        const strDisplay = document.getElementById('string-display');
+
+        function renderString(str = myString) {
+            strDisplay.innerHTML = `<span class="str-highlight">"${str}"</span>`;
+        }
+
+        function toUpperCase() {
+            const res = myString.toUpperCase();
+            log(`"${myString}".toUpperCase() -> "${res}"`, 'result');
+            renderString(res);
+            setTimeout(() => renderString(), 2000); // 2秒后恢复展示原字符串
+        }
+
+        function toLowerCase() {
+            const res = myString.toLowerCase();
+            log(`"${myString}".toLowerCase() -> "${res}"`, 'result');
+            renderString(res);
+            setTimeout(() => renderString(), 2000);
+        }
+
+        function sliceStr() {
+            const res = myString.slice(0, 5);
+            log(`"${myString}".slice(0, 5) -> "${res}"`, 'result');
+            renderString(res);
+            setTimeout(() => renderString(), 2000);
+        }
+
+        function replaceStr() {
+            const res = myString.replace('World', 'JS');
+            log(`"${myString}".replace('World', 'JS') -> "${res}"`, 'result');
+            renderString(res);
+            setTimeout(() => renderString(), 2000);
+        }
+
+        function templateLiteral() {
+            const name = "小明";
+            const age = 18;
+            const res = `我叫${name}，今年${age}岁。`;
+            log("模板字符串: `我叫\${name}，今年\${age}岁。`", 'info');
+            log(`-> 输出: "${res}"`, 'result');
+            renderString(res);
+            setTimeout(() => renderString(), 3000);
+        }
+
+        function resetString() {
+            myString = "Hello, World";
+            log(`字符串已重置`, 'info');
+            renderString();
+        }
+
+
+        // --- 通用控制台打印 ---
+        function log(message, type = 'info') {
+            const consoleEl = document.getElementById('console');
+            const line = document.createElement('div');
+            line.className = `console-line ${type}`;
+            line.textContent = `> ${message}`;
+            consoleEl.appendChild(line);
+            consoleEl.scrollTop = consoleEl.scrollHeight;
+        }
+
+        // 初始化渲染
+        renderObject();
+        renderString();
+
+    </script>
+</body>
+</html>
